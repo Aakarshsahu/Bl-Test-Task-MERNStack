@@ -37,7 +37,7 @@ const Home = () => {
           if (response.status === 200) {
             
               console.log('User registered successfully!');
-              navigate('/dashboard');
+              navigate('/dk');
               
           } else {
               

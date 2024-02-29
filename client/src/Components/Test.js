@@ -1,32 +1,22 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
 
-  const getUser = async () => {
-    try {
-      const response = await axios.get("http://localhost:6005/login/sucess", {
-        withCredentials: true,
-      });
-
-      console.log("response", response);
-    } catch (error) {
-      navigate("*");
-    }
-  };
-
   useEffect(() => {
-    getUser();
+    toast("Here u can view all use...!");
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:6005/getAllUsers");
-        if (response.ok) {
-          const data = await response.json();
+        const response = await axios.get("http://localhost:6005/getAllUsers");
 
-          setUsers(data.users);
+        console.log(response, "data");
+
+        if (response.status === 200) {
+          setUsers(response.data.users);
         } else {
           console.error("Failed to fetch users");
         }
@@ -58,15 +48,16 @@ const Dashboard = () => {
         >
           {users.map((user) => (
             <li
-              style={{ fontSize: "20px" , cursor:"pointer"}}
+              style={{ fontSize: "20px" , cursor:"pointer" }}
               key={user.id}
-              onClick={() => handleUserClick(user.id)}
+              onClick={() => handleUserClick(user._id)}
             >
               {user.name}
             </li>
           ))}
         </ul>
       </div>
+      <ToastContainer />
     </>
   );
 };
